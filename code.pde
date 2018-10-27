@@ -141,8 +141,7 @@ draw=function(){
     //debug
     fill(0);
     textSize(20);
-    text(speed, 200, 200);
-    text(bY, 300, 200);
+    //text(speed, 200, 200);
     //stop
     if(keyCode==82){
         CRASH
