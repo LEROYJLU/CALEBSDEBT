@@ -13,6 +13,8 @@ var point=0;
 //arrays
 var walls=[[]];
 var wSize=0;
+var pause=false;
+var keyC=true;
 //functions
 var addWall=function(no){
     for(var i=0;i<no;i++){
@@ -56,95 +58,105 @@ var lose=function(){
 textAlign(CENTER, CENTER);
 addWall(10);
 draw=function(){
-    background(255, 255, 0);    
-    //bar
-    stroke(255, 0, 0);
-    strokeWeight(10);
-    line(mouseX-50, 0, mouseX+50, 0);
-    line(0, mouseY-50, 0, mouseY+50);
-    line(mouseX-50, 800, mouseX+50, 800);
-    line(800, mouseY-50, 800, mouseY+50);
-    //movement
-    bX+=xV;
-    bY+=yV;
-    //edge collision
-    if(bX<-400+(Bsize/2)){        
-        bX=-400+(Bsize/2);
-        if(bY+400>mouseY-50&&bY+400<mouseY+50){
-            leftRight();
-        }else{
-            lose();
-        }
+    //pause
+    if(keyCode==82&&keyC){
+            pause!=false;  
+            keyC=false;
     }
-    if(bY<-400+(Bsize/2)){
-        bY=-400+(Bsize/2);
-        if(bX+400>mouseX-50&&bX+400<mouseX+50){
-            upDown();
-        }else{
-            lose();
-        }
+    if(!keyPressed){
+        keyC=true;
     }
-    if(bX>400-(Bsize/2)){
-        bX=400-(Bsize/2);
-        if(bY+400>mouseY-50&&bY+400<mouseY+50){
-            leftRight();
-        }else{
-            lose();
-        }
-    }
-    if(bY>400-(Bsize/2)){
-        bY=400-(Bsize/2);
-        if(bX+400>mouseX-50&&bX+400<mouseX+50){
-            upDown();
-        }else{
-            lose();
-        }
-    }
-    //walls draw
-    for(var i=0;i<wSize;i++){
-        fill(255);
+    if(pause){
+        fill(0);
+        textSize(100);
+        text("PAUSED", 400, 400);        
+    }else{
+        background(255, 255, 0);    
+        //bar
         stroke(255, 0, 0);
-        strokeWeight(5);
-        rect(walls[i][0]-(walls[i][2]/2)+400, walls[i][1]-(walls[i][2]/2)+400, walls[i][2], walls[i][2]);
-        //small
-        if(walls[i][2]<=30){
-            walls[i][2]--;
-        }
-        if(walls[i][2]<=0){
-                walls[i][0]=-9999;
-                walls[i][1]=-9999;
-                walls[i][2]=9999;
-            addWall(round(random(0.5, 2.5)));
-            point++;
+        strokeWeight(10);
+        line(mouseX-50, 0, mouseX+50, 0);
+        line(0, mouseY-50, 0, mouseY+50);
+        line(mouseX-50, 800, mouseX+50, 800);
+        line(800, mouseY-50, 800, mouseY+50);
+        //movement
+        bX+=xV;
+        bY+=yV;
+        //edge collision
+        if(bX<-400+(Bsize/2)){        
+            bX=-400+(Bsize/2);
+            if(bY+400>mouseY-50&&bY+400<mouseY+50){
+                leftRight();
+            }else{
+                lose();
             }
-        //collision logic
-        if(!spawn&&bX>walls[i][0]-(walls[i][2]/2)&&bX<walls[i][0]+(walls[i][2]/2)&&((bY>walls[i][1]-(walls[i][2]/2)-(Bsize/2)&&bY<walls[i][1])||(bY<walls[i][1]+(walls[i][2]/2)+(Bsize/2)&&bY>walls[i][1]))){
-            upDown();  
-            walls[i][2]-=20;
         }
-        if(!spawn&&bY>walls[i][1]-(walls[i][2]/2)&&bY<walls[i][1]+(walls[i][2]/2)&&((bX>walls[i][0]-(walls[i][2]/2)-(Bsize/2)&&bX<walls[i][0])||(bX<walls[i][0]+(walls[i][2]/2)+(Bsize/2)&&bX>walls[i][0]))){
-            leftRight();  
-            walls[i][2]-=20;            
+        if(bY<-400+(Bsize/2)){
+            bY=-400+(Bsize/2);
+            if(bX+400>mouseX-50&&bX+400<mouseX+50){
+                upDown();
+            }else{
+                lose();
+            }
         }
-    }
-    //ball
-    fill(0);
-    if(spawn){
-        fill(255);
-    }
-    noStroke();
-    ellipse(bX+400, bY+400, Bsize, Bsize);
-    //points
-    fill(0, 0, 0, 40);
-    textSize(150);
-    text(point, 400, 400);
-    //debug
-    fill(0);
-    textSize(20);
-    //text(speed, 200, 200);
-    //stop
-    if(keyCode==82){
-        CRASH
+        if(bX>400-(Bsize/2)){
+            bX=400-(Bsize/2);
+            if(bY+400>mouseY-50&&bY+400<mouseY+50){
+                leftRight();
+            }else{
+                lose();
+            }
+        }
+        if(bY>400-(Bsize/2)){
+            bY=400-(Bsize/2);
+            if(bX+400>mouseX-50&&bX+400<mouseX+50){
+                upDown();
+            }else{
+                lose();
+            }
+        }
+        //walls draw
+        for(var i=0;i<wSize;i++){
+            fill(255);
+            stroke(255, 0, 0);
+            strokeWeight(5);
+            rect(walls[i][0]-(walls[i][2]/2)+400, walls[i][1]-(walls[i][2]/2)+400, walls[i][2], walls[i][2]);
+            //small
+            if(walls[i][2]<=30){
+                walls[i][2]--;
+            }
+            if(walls[i][2]<=0){
+                    walls[i][0]=-9999;
+                    walls[i][1]=-9999;
+                    walls[i][2]=9999;
+                addWall(round(random(0.5, 2.5)));
+                point++;
+                }
+            //collision logic
+            if(!spawn&&bX>walls[i][0]-(walls[i][2]/2)&&bX<walls[i][0]+(walls[i][2]/2)&&((bY>walls[i][1]-(walls[i][2]/2)-(Bsize/2)&&bY<walls[i][1])||(bY<walls[i][1]+(walls[i][2]/2)+(Bsize/2)&&bY>walls[i][1]))){
+                upDown();  
+                walls[i][2]-=20;
+            }
+            if(!spawn&&bY>walls[i][1]-(walls[i][2]/2)&&bY<walls[i][1]+(walls[i][2]/2)&&((bX>walls[i][0]-(walls[i][2]/2)-(Bsize/2)&&bX<walls[i][0])||(bX<walls[i][0]+(walls[i][2]/2)+(Bsize/2)&&bX>walls[i][0]))){
+                leftRight();  
+                walls[i][2]-=20;            
+            }
+        }
+        //ball
+        fill(0);
+        if(spawn){
+            fill(255);
+        }
+        noStroke();
+        ellipse(bX+400, bY+400, Bsize, Bsize);
+        //points
+        fill(0, 0, 0, 40);
+        textSize(150);
+        text(point, 400, 400);
+        //debug
+        fill(0);
+        textSize(20);
+        //text(speed, 200, 200);
     }
 }
 
