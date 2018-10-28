@@ -60,7 +60,12 @@ addWall(10);
 draw=function(){
     //pause
     if(keyCode==82&&keyC){
-            pause!=false;  
+            if(pause){
+                pause=false;
+            }else{
+                pause=true;
+            }
+            keyCode=0;
             keyC=false;
     }
     if(!keyPressed){
