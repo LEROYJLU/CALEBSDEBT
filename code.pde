@@ -78,7 +78,7 @@ draw=function(){
         speed=3+(0.3*bNo)+((Bsize-10)/20);
         xV=sin(angle)*speed*fx;
         yV=cos(angle)*speed*fy;
-        if(bNo==11){
+        if(bNo==8){
             bNo=0;
             Bsize+=10;
             if(Bsize==100){
